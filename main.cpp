@@ -4,8 +4,8 @@
 using namespace std;
 
 int main(){
-  sqlite3 db;
-  char ErrMsg = 0;
+  sqlite3 *db;
+  char *ErrMsg = 0;
   int rc;
 
   rc = sqlite3_open("./cis427_crypto.sqlite", &db);
