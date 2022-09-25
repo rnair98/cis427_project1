@@ -1,11 +1,11 @@
 
-FLAGS = -Wall -Werror -pedantic --std=c++11 -g
+FLAGS = -Wall -Werror -pedantic -g
 
-all: a.out
-	./a.out
+all: client
+	./client
 
-a.out: main.cpp
-	g++ $(FLAGS) $^  -l sqlite3 -o $@
+client: client.c
+	gcc $(FLAGS) $^ -o $@
 
 clean:
-	rm -rf a.out
+	rm -rf client
