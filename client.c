@@ -18,6 +18,13 @@ int main(int argc, char * argv[]) {
   char buf[MAX_LINE];
   int s;
   int len;
+  const char * commands[] = {
+    "LIST\n",
+    "BALANCE\n",
+    "SHUTDOWN\n",
+    "QUIT\n",
+  };
+  char *search;
 
   if (argc==2) {
     host = argv[1];
@@ -53,6 +60,24 @@ int main(int argc, char * argv[]) {
   while (fgets(buf, sizeof(buf), stdin)) {
     buf[MAX_LINE-1] = '\0';
     len = strlen(buf) + 1;
-    send(s, buf, len, 0);
+    search = strstr(commands,buf);
+    if (search != NULL) {
+      if (strcmp(buf,"QUIT\n")==0){
+        printf("200 OK\n");
+	break;
+      } else {
+        send(s,buf,len,0);
+      }
+    } 
+    else if (strstr(buf,"BUY")) {
+      send(s,buf,len,0);
+    } 
+    else if (strstr(buf,"SELL")) {
+      send(s,buf,len,0);
+    } 
+    else {
+      printf("400 invalid command");
+      break;
+    }
   }
 }
