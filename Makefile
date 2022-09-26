@@ -9,3 +9,4 @@ client: client.c
 
 clean:
 	rm -rf client
+        git rm client
