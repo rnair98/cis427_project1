@@ -164,6 +164,14 @@ void sell_crypto(sqlite3 *db, char *zErrMsg, int sql_execute, char *sql, const c
     check_entry(sql_execute,zErrMsg);
 }
 
+void list_all(sqlite3 *db, char *zErrMsg, int sql_execute, char *sql) {
+  // list all records in the crypto database for user with user_id 1
+  const char* data = "SELECT OPERATION";
+  sprintf(sql,"SELECT * FROM Cryptos WHERE user_id = 1;");
+  sql_execute = sqlite3_exec(db,sql,select_callback,(void*)data,&zErrMsg);
+  check_entry(sql_execute,zErrMsg);
+}
+
 
 void close_database(sqlite3 *db)
 {

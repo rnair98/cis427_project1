@@ -63,10 +63,14 @@ int main(int argc, char* argv[]) {
             if ( strcmp(cmd, "SHUTDOWN\n")==0 ) {
                 send(new_s, ShutMsg, sizeof(ShutMsg), 0);
 	            close_database(db);
-	            close(new_s);
-	            return 0;
-            } else if ( strcmp(cmd, "LIST\n")==0 ) {
-                // list
+                close(new_s);
+                exit(0);
+            } else if (strcmp(cmd, "QUIT\n")) {
+                send(new_s, ShutMsg, sizeof(ShutMsg), 0);
+            }
+            else if ( strcmp(cmd, "LIST\n")==0 ) {
+                send(new_s, ShutMsg, sizeof(ShutMsg), 0);
+                list_all(db,zErrMsg,sql_execute,sql);
             } else if ( strcmp(cmd, "SELL")==0 ) {
                 while( cmd != NULL ) {
                     if (command_count > 5) {
@@ -89,7 +93,10 @@ int main(int argc, char* argv[]) {
                     cmd = strtok(NULL, " ");
                     command_count++;
                 }
-                sell_crypto(db, zErrMsg, sql_execute, sql, crypto_name, crypto_amount, crypto_price_in_usd, user_id);
+                if (command_count == 5 && crypto_name != NULL && crypto_amount > 0 && crypto_price_in_usd > 0 && user_id > 0) {
+                    send(new_s, ShutMsg, sizeof(ShutMsg), 0);
+                    sell_crypto(db, zErrMsg, sql_execute, sql, crypto_name, crypto_amount, crypto_price_in_usd, user_id);
+                }
             } else if ( strcmp(cmd, "BUY")==0) {
                 while( cmd != NULL ) {
                        if (command_count > 5) {
@@ -112,9 +119,12 @@ int main(int argc, char* argv[]) {
                        cmd = strtok(NULL, " ");
                        command_count++;                       
                    }
-                   buy_crypto(db, zErrMsg, sql_execute, sql, crypto_name, crypto_amount,\
-                              crypto_price_in_usd, user_id);
+                if (command_count == 5 && crypto_name != NULL && crypto_amount > 0 && crypto_price_in_usd > 0 && user_id > 0) {
+                    send(new_s, ShutMsg, sizeof(ShutMsg), 0);
+                    buy_crypto(db, zErrMsg, sql_execute, sql, crypto_name, crypto_amount, crypto_price_in_usd, user_id);
+                }
             } else if ( strcmp(cmd, "BALANCE\n")==0 ) {
+                send(new_s, ShutMsg, sizeof(ShutMsg), 0);
                 show_balance(db,zErrMsg,sql_execute,sql,user_id);
             } else if ( strstr(cmd, "SHUTDOWN")) {
                 send(new_s, ForMsg, sizeof(ForMsg), 0);

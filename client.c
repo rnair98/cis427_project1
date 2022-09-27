@@ -60,24 +60,6 @@ int main(int argc, char * argv[]) {
   while (fgets(buf, sizeof(buf), stdin)) {
     buf[MAX_LINE-1] = '\0';
     len = strlen(buf) + 1;
-    search = strstr(commands,buf);
-    if (search != NULL) {
-      if (strcmp(buf,"QUIT\n")==0){
-        printf("200 OK\n");
-	break;
-      } else {
-        send(s,buf,len,0);
-      }
-    } 
-    else if (strstr(buf,"BUY")) {
-      send(s,buf,len,0);
-    } 
-    else if (strstr(buf,"SELL")) {
-      send(s,buf,len,0);
-    } 
-    else {
-      printf("400 invalid command");
-      break;
-    }
+    send(s, buf, len, 0);
   }
 }
