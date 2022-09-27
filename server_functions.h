@@ -7,9 +7,9 @@
 
 #include <sqlite3.h>
 
-static int insert_callback(void *NotUsed, int argc, char **argv, char **azColName);
-static int select_callback(void *data, int argc, char **argv, char **azColName);
-static int update_callback(void *data, int argc, char **argv, char **azColName);
+int insert_callback(void *NotUsed, int argc, char **argv, char **azColName);
+int select_callback(void *data, int argc, char **argv, char **azColName);
+int update_callback(void *data, int argc, char **argv, char **azColName);
 
 int init_database(sqlite3 *db, char *zErrMsg,int sql_execute,char *sql); 
 void close_database(sqlite3 *db);

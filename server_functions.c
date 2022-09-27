@@ -2,18 +2,17 @@
 #include <stdlib.h>
 #include "server_functions.h"
 
-static int insert_callback(void *NotUsed, int argc, char ** argv, char **azColName)
+int insert_callback(void *NotUsed, int argc, char ** argv, char **azColName)
 {
     int i;
-    char* data;
     for (i = 0; i < argc; i++) {
         fprintf(stdout,"%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
     }
-    fprintf(stdout,"\n");
+    fprintf(stdout  ,"\n");
     return 0;
 }
 
-static int select_callback(void *data, int argc, char **argv, char **azColName){
+int select_callback(void *data, int argc, char **argv, char **azColName){
    int i;
    fprintf(stderr, "%s: ", (const char*)data);
    
@@ -25,7 +24,7 @@ static int select_callback(void *data, int argc, char **argv, char **azColName){
    return 0;
 }
 
-static int update_callback(void *data, int argc, char **argv, char **azColName){
+int update_callback(void *data, int argc, char **argv, char **azColName){
    int i;
    fprintf(stderr, "%s: ", (const char*)data);
    
@@ -146,7 +145,7 @@ void sell_crypto(sqlite3 *db, char *zErrMsg, int sql_execute, char *sql, const c
 
     // get user's crypto balance
     sprintf(sql,"SELECT crypto_balance FROM Cryptos WHERE user_id = %d AND crypto_name = '%s';",user_id,crypto_name);
-    sql_execute = sqlite3_exec(db,sql,select_callback,0,&zErrMsg);
+    sql_execute = sqlite3_exec(db,sql,select_callback,(void*)select_data,&zErrMsg);
 
     // if user has enough crypto to sell, subtract crypto amount from user's crypto balance
     if (crypto_amount <= user_crypto_balance) {

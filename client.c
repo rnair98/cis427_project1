@@ -18,13 +18,6 @@ int main(int argc, char * argv[]) {
   char buf[MAX_LINE];
   int s;
   int len;
-  const char * commands[] = {
-    "LIST\n",
-    "BALANCE\n",
-    "SHUTDOWN\n",
-    "QUIT\n",
-  };
-  char *search;
 
   if (argc==2) {
     host = argv[1];

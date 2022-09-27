@@ -18,10 +18,10 @@ int main(int argc, char* argv[]) {
     char ForMsg [MAX_LINE] = "403 message format error\n";
 
     // database variables
-    sqlite3* db;
+    sqlite3* db = NULL;
     char *zErrMsg = 0;
     int sql_execute = 0;
-    char *sql;
+    char *sql = NULL;
     const char* crypto_name;
     double crypto_amount = 0;
     double crypto_price_in_usd = 0;
