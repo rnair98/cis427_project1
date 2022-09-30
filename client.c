@@ -18,6 +18,7 @@ int main(int argc, char * argv[]) {
   char buf[MAX_LINE];
   int s;
   int len;
+  char ServerReply[MAX_LINE];
 
   if (argc==2) {
     host = argv[1];
@@ -46,6 +47,7 @@ int main(int argc, char * argv[]) {
   }
   if (connect(s, (struct sockaddr *)&sin, sizeof(sin)) < 0) {
     perror("crypto-trading client: connect");
+    close(s);
     exit(1);
   }
 
@@ -54,5 +56,17 @@ int main(int argc, char * argv[]) {
     buf[MAX_LINE-1] = '\0';
     len = strlen(buf) + 1;
     send(s, buf, len, 0);
+    recv(s, ServerReply, sizeof(ServerReply),0);
+      while (strcmp(ServerReply, "<>")!=0) {
+          printf("%s", ServerReply);
+          recv(s, ServerReply, sizeof(ServerReply),0);
+      }
+    if(strcmp(buf,"SHUTDOWN\n")==0){
+        break;
+    }
+    if(strcmp(buf,"QUIT\n")==0){
+        break;
+    }
   }
+    close(s);
 }
